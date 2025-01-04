@@ -1,0 +1,25 @@
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setwarnings(False)
+GPIO.cleanup()
+GPIO.setmode(GPIO.BCM)
+
+led_pins=[21,17,22]
+
+for pin in led_pins:
+    GPIO.setup(pin, GPIO.OUT)
+    
+def display(value):
+    for i in range(3):
+            GPIO.output(led_pins[i],(value>>i)&1)
+            
+try:   
+    while True:
+        for count in range(8):
+            display(count)
+            time.sleep(2)
+            
+except KeyboardInterrupt:
+    GPIO.cleanup()
+    exit()
