@@ -1,0 +1,21 @@
+import RPi.GPIO as GPIO
+import time
+GPIO.setwarnings(False)
+GPIO.cleanup()
+GPIO.setmode(GPIO.BCM)
+motor=18
+soil=13
+GPIO.setup(soil,GPIO.IN)
+GPIO.setup(motor,GPIO.OUT)
+try:
+    while True:
+	    if(GPIO.input(soil)==1):
+       	GPIO.output(motor,True)
+       	print("soil dry")
+	    else:
+       	GPIO.output(motor,False)
+       	print("soil wet")    
+
+except KeyboardInterrupt:
+    GPIO.cleanup()
+exit()
