@@ -9,12 +9,12 @@ GPIO.setup(soil,GPIO.IN)
 GPIO.setup(motor,GPIO.OUT)
 try:
     while True:
-	    if(GPIO.input(soil)==1):
-       	GPIO.output(motor,True)
-       	print("soil dry")
-	    else:
-       	GPIO.output(motor,False)
-       	print("soil wet")    
+	if(GPIO.input(soil)==1):
+       		GPIO.output(motor,True)
+       		print("soil dry")
+	else:
+       		GPIO.output(motor,False)
+       		print("soil wet")    
 
 except KeyboardInterrupt:
     GPIO.cleanup()
