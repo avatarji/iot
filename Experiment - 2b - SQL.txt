@@ -1,0 +1,53 @@
+sql.py
+
+import time
+import datetime
+import csv
+import MySQLdb
+import RPi.GPIO as GPIO
+GPIO.setwarnings(False)
+GPIO.cleanup()
+pin=23
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pin,GPIO.IN)
+db=MySQLdb.connect(host="localhost",user="test",passwd="123",db="test")
+cur=db.cursor()
+while True:
+    degrees=GPIO.input(pin)
+    timenow=datetime.datetime.utcnow()
+    print(degrees)
+    cur.execute("INSERT INTO Sensorstats (date_time, irsensorstat) VALUES (%s, %s);", (timenow, degrees));
+    db.commit()
+    time.sleep(1)
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+terminal-1 commands
+
+sudo apt update
+sudo apt upgrade
+sudo apt install mariadb-server mariadb-client
+sudo apt install python3-mysqldb
+sudo mysql_secure_installation
+sudo mysql -u root -p
+CREATE DATABASE test;
+CREATE USER 'test'@'localhost' IDENTIFIED BY '123';
+USE test;
+CREATE TABLE Sensorstats (date_time VARCHAR(50), irsensorstat FLOAT);
+GRANT ALL PRIVILEGES ON test.* TO 'test'@'localhost';
+FLUSH PRIVILEGES;
+quit
+
+(NOTE: now, run the python file in another new terminal, and come back to this terminal after that and run the below commands)
+
+sudo mysql -u root -p
+USE test;
+SELECT * FROM Sensorstats;
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+terminal-2 commands (first locate where the file is saved, and move to that folder using 'cd' command, then run it using the below command)
+
+python3 sql.py
