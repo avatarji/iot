@@ -1,0 +1,30 @@
+import RPi.GPIO as GPIO
+import time
+GPIO.setwarnings(False)
+GPIO.cleanup()
+GPIO.setmode(GPIO.BCM)
+
+LDR_PIN = 25
+pin1=21
+pin2=17
+pin3=18
+
+GPIO.setup(pin1, GPIO.OUT)
+GPIO.setup(pin2, GPIO.OUT)
+GPIO.setup(pin3, GPIO.OUT)
+    
+GPIO.setup(LDR_PIN,GPIO.IN)
+
+while True:
+    if (GPIO.input(LDR_PIN)==1):
+            GPIO.output(pin1,True)
+            time.sleep(1)
+            GPIO.output(pin2,True)
+            time.sleep(1)
+            GPIO.output(pin3,True)
+    else:
+	    GPIO.output(pin1,False)
+            time.sleep(1)
+            GPIO.output(pin2,False)
+            time.sleep(1)
+            GPIO.output(pin3,False)
