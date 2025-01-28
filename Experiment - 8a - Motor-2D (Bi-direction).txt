@@ -1,0 +1,31 @@
+import RPi.GPIO as GPIO
+import time
+GPIO.setwarnings(False)
+GPIO.cleanup()
+GPIO.setmode(GPIO.BCM)
+p1 = 22
+p2 = 27
+GPIO.setup(p1,GPIO.OUT)
+GPIO.setup(p2,GPIO.OUT)
+def clockwise(p):
+    print("Running clockwise")
+    GPIO.output(p,True)
+    time.sleep(5)
+    print("Stopping clockwise rotation")
+    GPIO.output(p,False)
+def anticlockwise(p):
+    print("Running anticlockwise")
+    GPIO.output(p,False)
+    time.sleep(5)
+    print("Stopping anticlockwise rotation")
+    GPIO.output(p,True)
+try:
+    while True:
+       clockwise(p1)
+       time.sleep(2)
+       anticlockwise(p2)
+       time.sleep(2)
+
+except KeyboardInterrupt:
+    GPIO.cleanup()
+exit()

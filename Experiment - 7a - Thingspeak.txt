@@ -1,0 +1,32 @@
+import http.client
+import urllib.parse
+import time
+key =  "E5ZW0Q3OG49EOU9R"
+import board
+import adafruit_dht
+sensor = adafruit_dht.DHT11(board.D13)
+
+def thermometer():
+    while True:
+        try:
+            temp = sensor.temperature
+            humidity = sensor.humidity
+            params = urllib.parse.urlencode({'field1': str(temp),'field2': str(humidity),'key': key})
+            headers = {"Content-Type": "application/x-www-form-urlencoded","Accept": "text/plain"}
+            conn = http.client.HTTPConnection("api.thingspeak.com:80")   
+            try:
+                conn.request("POST", "/update", params, headers)
+                response = conn.getresponse()  
+                print("Temperature: {} °C, Humidity: {} %".format(temp, humidity))
+                data = response.read()
+                conn.close()
+            except Exception as e:
+                print("Connection failed", e)
+                break
+        except Exception as e:
+                print("server read failed", e)
+                time.sleep(2)
+        
+if _name_ == "_main_":
+    while True:
+        thermometer()
